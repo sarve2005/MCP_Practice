@@ -1,0 +1,18 @@
+[project]
+name = "mcp-practice"
+version = "0.1.0"
+description = "A generic FastMCP server template"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp[cli]>=1.0,<2",
+    "requests>=2.31,<3",
+    "python-dotenv>=1.0,<2",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+package = false
