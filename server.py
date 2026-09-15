@@ -8,13 +8,16 @@ load_dotenv()
 app_key = os.getenv("APP_KEY")
 api_token = os.getenv("API_TOKEN")
 base_url = os.getenv("BASE_URL")
+host = os.getenv("HOST", "0.0.0.0")
+port = int(os.getenv("PORT", "10000"))
+transport = os.getenv("MCP_TRANSPORT", "stdio")
 
 auth_query = {
     "key":app_key,
     "token":api_token
 }
 
-mcp = FastMCP("MCP Practice")
+mcp = FastMCP("MCP Practice", host=host, port=port)
 
 @mcp.tool()
 async def create_board(name: str) -> str:
@@ -294,6 +297,4 @@ User request:
 
 
 if __name__ == "__main__":
-    print("Starting the server")
-    mcp.run()
-    print("Server running")
+    mcp.run(transport=transport)
