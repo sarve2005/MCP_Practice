@@ -20,7 +20,7 @@ auth_query = {
 mcp = FastMCP("MCP Practice", host=host, port=port)
 
 @mcp.tool()
-async def create_board(name: str) -> str:
+def create_board(name: str) -> str:
     """Create a new Trello board.
 
     Args:
@@ -34,7 +34,7 @@ async def create_board(name: str) -> str:
         "name":name
     }
     query = query | auth_query
-    response = await requests.response(
+    response = requests.request(
         "POST",
         url,
         params=query
@@ -42,7 +42,7 @@ async def create_board(name: str) -> str:
     return response.text
 
 @mcp.tool()
-async def delete_board(id:str) -> str:
+def delete_board(id:str) -> str:
     """Delete a Trello board.
 
     Args:
@@ -51,17 +51,17 @@ async def delete_board(id:str) -> str:
     Returns:
         The Trello API response confirming the deletion.
     """
-    url = base_url + "boards/{id}"
+    url = base_url + f"boards/{id}"
     query = auth_query
-    response = await requests.response(
+    response = requests.request(
         "DELETE",
         url,
-        query=query
+        params=query
     )
     return response.text
 
 @mcp.tool()
-async def create_list(name:str,idBoard:str) -> str:
+def create_list(name:str,idBoard:str) -> str:
     """Create a new list on a Trello board.
 
     Args:
@@ -78,16 +78,16 @@ async def create_list(name:str,idBoard:str) -> str:
     }
 
     query = query|auth_query
-    response = await requests.response(
+    response = requests.request(
         "POST",
         url,
-        query=query
+        params=query
     )
     return response.text
     
 
 @mcp.tool()
-async def create_card(idList:str) -> str:
+def create_card(idList:str) -> str:
     """Create a new card in a Trello list.
 
     Args:
@@ -101,15 +101,15 @@ async def create_card(idList:str) -> str:
         "idList":idList
     }
     query = query|auth_query
-    response = await requests.response(
+    response = requests.request(
         "POST",
         url,
-        query=query
+        params=query
     )
     return response.text
 
 @mcp.tool()
-async def delete_card(id:str) -> str:
+def delete_card(id:str) -> str:
     """Delete a Trello card.
 
     Args:
@@ -118,9 +118,9 @@ async def delete_card(id:str) -> str:
     Returns:
         The Trello API response confirming the deletion.
     """
-    url = base_url + "cards/{id}"
+    url = base_url + f"cards/{id}"
     query = auth_query
-    response = await requests.response(
+    response = requests.request(
         "DELETE",
         url,
         query
@@ -128,7 +128,7 @@ async def delete_card(id:str) -> str:
     return response.text
 
 @mcp.tool()
-async def search(query:str,cards_limit:int = 5,boards_limit:int = 5) -> str:
+def search(query:str,cards_limit:int = 5,boards_limit:int = 5) -> str:
     """Search Trello cards and boards by text.
 
     Args:
@@ -147,7 +147,7 @@ async def search(query:str,cards_limit:int = 5,boards_limit:int = 5) -> str:
         "boards_limit":boards_limit
     }
     query = query | auth_query
-    response = await requests.response(
+    response = requests.request(
         "GET",
         url,
         query
@@ -155,7 +155,7 @@ async def search(query:str,cards_limit:int = 5,boards_limit:int = 5) -> str:
     return response.text
 
 @mcp.resource("boards://all")
-async def get_boards() -> str:
+def get_boards() -> str:
     """Retrieve all Trello boards available to the authenticated user.
 
     Returns:
@@ -163,15 +163,15 @@ async def get_boards() -> str:
     """
     url = base_url + "members/me/boards"
     query = auth_query
-    response = await requests.response(
+    response = requests.request(
         "GET",
         url,
-        query=query
+        params=query
     )
     return response.text
 
 @mcp.resource("boards://{id}")
-async def get_board(id: str) -> str:
+def get_board(id: str) -> str:
     """Retrieve details for one Trello board.
 
     Args:
@@ -182,15 +182,15 @@ async def get_board(id: str) -> str:
     """
     url = base_url + f"boards/{id}"
     query = auth_query
-    response = await requests.response(
+    response = requests.request(
         "GET",
         url,
-        query=query
+        params=query
     )
     return response.text
 
 @mcp.resource("boards://{idBoard}/lists")
-async def get_lists(idBoard: str) -> str:
+def get_lists(idBoard: str) -> str:
     """Retrieve all lists belonging to a Trello board.
 
     Args:
@@ -201,15 +201,15 @@ async def get_lists(idBoard: str) -> str:
     """
     url = base_url + f"boards/{idBoard}/lists"
     query = auth_query
-    response = await requests.response(
+    response = requests.request(
         "GET",
         url,
-        query=query
+        params=query
     )
     return response.text
 
 @mcp.resource("lists://{id}")
-async def get_list(id: str) -> str:
+def get_list(id: str) -> str:
     """Retrieve details for one Trello list.
 
     Args:
@@ -220,15 +220,15 @@ async def get_list(id: str) -> str:
     """
     url = base_url + f"lists/{id}"
     query = auth_query
-    response = await requests.response(
+    response = requests.request(
         "GET",
         url,
-        query=query
+        params=query
     )
     return response.text
 
 @mcp.resource("boards://{idBoard}/cards")
-async def get_cards(idBoard: str) -> str:
+def get_cards(idBoard: str) -> str:
     """Retrieve all cards belonging to a Trello board.
 
     Args:
@@ -239,15 +239,15 @@ async def get_cards(idBoard: str) -> str:
     """
     url = base_url + f"boards/{idBoard}/cards"
     query = auth_query
-    response = await requests.response(
+    response = requests.request(
         "GET",
         url,
-        query=query
+        params=query
     )
     return response.text
 
 @mcp.resource("cards://{id}")
-async def get_card(id: str) -> str:
+def get_card(id: str) -> str:
     """Retrieve details for one Trello card.
 
     Args:
@@ -258,10 +258,10 @@ async def get_card(id: str) -> str:
     """
     url = base_url + f"cards/{id}"
     query = auth_query
-    response = await requests.response(
+    response = requests.request(
         "GET",
         url,
-        query=query
+        params=query
     )
     return response.text
 
