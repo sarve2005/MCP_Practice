@@ -123,7 +123,7 @@ def delete_card(id:str) -> str:
     response = requests.request(
         "DELETE",
         url,
-        query
+        params=query
     )
     return response.text
 
@@ -150,7 +150,7 @@ def search(query:str,cards_limit:int = 5,boards_limit:int = 5) -> str:
     response = requests.request(
         "GET",
         url,
-        query
+        params=query
     )
     return response.text
 
