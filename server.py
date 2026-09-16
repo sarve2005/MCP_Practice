@@ -87,10 +87,11 @@ def create_list(name:str,idBoard:str) -> str:
     
 
 @mcp.tool()
-def create_card(idList:str) -> str:
+def create_card(name: str, idList: str) -> str:
     """Create a new card in a Trello list.
 
     Args:
+        name: The name to assign to the new card.
         idList: The Trello list ID where the card will be created.
 
     Returns:
@@ -98,6 +99,7 @@ def create_card(idList:str) -> str:
     """
     url = base_url + "cards"
     query = {
+        "name": name,
         "idList":idList
     }
     query = query|auth_query
